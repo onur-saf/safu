@@ -227,7 +227,7 @@ export default function Home() {
                   </p>
                   <div className='mt-6 flex space-x-4 justify-center'>
                     <a
-                      href='#'
+                      href='https://four.meme/token/0xf9926cd0dcb580357ccbaa8473b549fa86e79d96'
                       target='_blank'
                       className='px-6 py-3 text-lg font-bold bg-primary text-secondary rounded-lg shadow-lg hover:scale-105 transition'
                     >
