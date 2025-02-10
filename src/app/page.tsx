@@ -1,101 +1,535 @@
-import Image from "next/image";
+'use client';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Lexend_Deca } from 'next/font/google';
+import { useEffect, useRef, useState } from 'react';
+
+const lexendDeca = Lexend_Deca({
+  subsets: ['latin'],
+  weight: ['400', '700'], // Regular and Bold
+  display: 'swap',
+});
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const container = useRef(null);
+  const [scrollY, setScrollY] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [lastSlideChange, setLastSlideChange] = useState(Date.now());
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [mouseStart, setMouseStart] = useState<number | null>(null);
+  const [mouseEnd, setMouseEnd] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const timeSinceLastChange = Date.now() - lastSlideChange;
+      if (timeSinceLastChange >= 5000) {
+        setCurrentSlide((prev) => (prev === 0 ? 1 : 0));
+        setLastSlideChange(Date.now());
+      }
+    }, 5000); // Check every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [lastSlideChange]);
+
+  const scrollToSection = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    id: string
+  ) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSlideChange = (slideIndex: number) => {
+    setCurrentSlide(slideIndex);
+    setLastSlideChange(Date.now());
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart === null || touchEnd === null) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      handleSlideChange(currentSlide === 0 ? 1 : 0);
+    } else if (isRightSwipe) {
+      handleSlideChange(currentSlide === 1 ? 0 : 1);
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setMouseStart(e.clientX);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (mouseStart !== null && isDragging) {
+      setMouseEnd(e.clientX);
+    }
+  };
+
+  const handleMouseUp = () => {
+    if (mouseStart === null || mouseEnd === null || !isDragging) return;
+
+    const distance = mouseStart - mouseEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      handleSlideChange(currentSlide === 0 ? 1 : 0);
+    } else if (isRightSwipe) {
+      handleSlideChange(currentSlide === 1 ? 0 : 1);
+    }
+
+    setMouseStart(null);
+    setMouseEnd(null);
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setMouseStart(null);
+    setMouseEnd(null);
+    setIsDragging(false);
+  };
+
+  return (
+    <main
+      className={`${lexendDeca.className} bg-secondary text-white min-h-screen`}
+    >
+      {/* Header */}
+      <motion.header
+        ref={container}
+        className='px-4 bg-gray shadow-lg fixed w-full top-0 z-50'
+        initial={{ opacity: 1 }}
+        animate={{ opacity: scrollY > 50 ? 0.8 : 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className='flex justify-between items-center'>
+          <div className='text-3xl font-bold text-primary flex items-center gap-2'>
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src='/safu_ubg.png'
+              alt='SAFU Logo'
+              width={96}
+              height={96}
             />
-            Deploy now
+          </div>
+          <nav>
+            <ul className='flex space-x-6'>
+              <li>
+                <Link
+                  href='#about'
+                  className='hover:text-primary'
+                  onClick={(e) => scrollToSection(e, 'about')}
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href='#tokenomics'
+                  className='hover:text-primary'
+                  onClick={(e) => scrollToSection(e, 'tokenomics')}
+                >
+                  Tokenomics
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href='#roadmap'
+                  className='hover:text-primary'
+                  onClick={(e) => scrollToSection(e, 'roadmap')}
+                >
+                  Roadmap
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </motion.header>
+
+      {/* Hero and SAFU & Four.Meme Sections */}
+      <motion.div
+        className='relative h-screen'
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          userSelect: isDragging ? 'none' : 'auto',
+          cursor: isDragging ? 'grabbing' : 'grab',
+        }}
+      >
+        <div className='absolute inset-0'>
+          <AnimatePresence mode='wait'>
+            {currentSlide === 0 ? (
+              <motion.section
+                key='slide1'
+                className='absolute inset-0 flex flex-col items-center justify-center text-center p-6'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <motion.img
+                  src='/hero1.png'
+                  alt='Astronaut Placeholder'
+                  className='absolute inset-0 w-full h-full object-cover opacity-50'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1 }}
+                  draggable={false}
+                />
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  className='relative z-10'
+                >
+                  <h1 className='text-6xl font-extrabold text-primary'>
+                    SAFU ON BSC
+                  </h1>
+                  <p
+                    className={`${lexendDeca.className} mt-4 text-3xl text-white max-w-xl mx-auto font-extrabold leading-relaxed`}
+                  >
+                    The most SAFU meme token on Binance Smart Chain.
+                  </p>
+                  <div className='mt-6 flex space-x-4 justify-center'>
+                    <a
+                      href='#'
+                      target='_blank'
+                      className='px-6 py-3 text-lg font-bold bg-primary text-secondary rounded-lg shadow-lg hover:scale-105 transition'
+                    >
+                      Buy Now
+                    </a>
+                    <a
+                      href='https://t.me/safu_0x'
+                      target='_blank'
+                      className='px-6 py-3 text-lg font-bold bg-gray text-white rounded-lg shadow-lg hover:scale-105 transition'
+                    >
+                      Join Telegram
+                    </a>
+                  </div>
+                </motion.div>
+              </motion.section>
+            ) : (
+              <motion.section
+                key='slide2'
+                id='safu-four-meme'
+                className='absolute inset-0 flex items-center justify-center'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className='absolute inset-0'>
+                  <Image
+                    src='/safu_four.png'
+                    alt='SAFU & Four.Meme Background'
+                    fill
+                    className='object-cover opacity-50'
+                    priority
+                    draggable={false}
+                  />
+                </div>
+                <div className='relative z-10 text-center max-w-4xl mx-auto px-6'>
+                  <h2 className='text-6xl font-extrabold text-primary mb-8'>
+                    SAFU & Four.Meme
+                  </h2>
+                  <p className='text-2xl font-semibold text-white leading-relaxed'>
+                    SAFU is more than just a meme token—it&apos;s a movement. By
+                    partnering with Four.Meme, we are pushing the boundaries of
+                    Web3 culture and integrating memes into the blockchain
+                    ecosystem. Our mission is to bring humor, community, and
+                    decentralized innovation together like never before.
+                  </p>
+                </div>
+              </motion.section>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Slider Dots */}
+        <div className='absolute bottom-8 left-0 right-0 flex justify-center space-x-2'>
+          <button
+            onClick={() => handleSlideChange(0)}
+            className={`w-3 h-3 rounded-full bg-primary transition-opacity cursor-pointer ${
+              currentSlide === 0 ? 'opacity-100' : 'opacity-50 hover:opacity-75'
+            }`}
+            aria-label='Go to slide 1'
+          />
+          <button
+            onClick={() => handleSlideChange(1)}
+            className={`w-3 h-3 rounded-full bg-primary transition-opacity cursor-pointer ${
+              currentSlide === 1 ? 'opacity-100' : 'opacity-50 hover:opacity-75'
+            }`}
+            aria-label='Go to slide 2'
+          />
+        </div>
+      </motion.div>
+      {/* About Section */}
+      <motion.section
+        id='about'
+        className='p-12 bg-gray'
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+      >
+        <h2 className='text-5xl font-bold text-primary text-center mb-12'>
+          About SAFU
+        </h2>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto'>
+          {/* Who We Are */}
+          <div className='bg-secondary p-6 rounded-lg shadow-lg'>
+            <div className='text-primary text-4xl mb-4 flex justify-center'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-16 w-16'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z'
+                />
+              </svg>
+            </div>
+            <h3 className='text-2xl font-bold text-primary mb-4'>Who We Are</h3>
+            <p className='text-gray-300'>
+              A community-driven project focused on bringing safety and security
+              to the BSC ecosystem through innovative tokenomics and strong
+              community governance.
+            </p>
+          </div>
+
+          {/* Why SAFU */}
+          <div className='bg-secondary p-6 rounded-lg shadow-lg'>
+            <div className='text-primary text-4xl mb-4 flex justify-center'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-16 w-16'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'
+                />
+              </svg>
+            </div>
+            <h3 className='text-2xl font-bold text-primary mb-4'>Why SAFU</h3>
+            <p className='text-gray-300'>
+              Built with security at its core, SAFU implements rigorous safety
+              measures including locked liquidity, audited smart contracts, and
+              transparent team operations.
+            </p>
+          </div>
+
+          {/* Community Benefits */}
+          <div className='bg-secondary p-6 rounded-lg shadow-lg'>
+            <div className='text-primary text-4xl mb-4 flex justify-center'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-16 w-16'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M13 10V3L4 14h7v7l9-11h-7z'
+                />
+              </svg>
+            </div>
+            <h3 className='text-2xl font-bold text-primary mb-4'>
+              Community Benefits
+            </h3>
+            <p className='text-gray-300'>
+              Join a thriving ecosystem with regular rewards, community events,
+              and the opportunity to participate in key project decisions
+              through our governance system.
+            </p>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Tokenomics Section */}
+      <motion.section
+        id='tokenomics'
+        className='p-12 bg-secondary'
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+      >
+        <h2 className='text-5xl font-bold text-primary text-center'>
+          Tokenomics
+        </h2>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto'>
+          {/* Left Column - Tokenomics Chart */}
+          <div className='bg-[#1a1a1a] p-8 rounded-lg shadow-lg flex items-center justify-center'>
+            <Image
+              src='/safu_ubg.png'
+              alt='Tokenomics Distribution'
+              width={400}
+              height={400}
+              className='rounded-lg'
+              draggable={false}
+            />
+          </div>
+
+          {/* Right Column - Tokenomics Details */}
+          <div className='bg-[#1a1a1a] p-8 rounded-lg shadow-lg space-y-6 flex flex-col justify-center'>
+            <div className='flex items-center space-x-4'>
+              <svg
+                className='h-8 w-8 text-primary'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+                />
+              </svg>
+              <div>
+                <h3 className='text-xl font-bold text-primary'>Total Supply</h3>
+                <p className='text-gray-300'>1,000,000,000 SAFU</p>
+              </div>
+            </div>
+
+            <div className='flex items-center space-x-4'>
+              <svg
+                className='h-8 w-8 text-primary'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+                />
+              </svg>
+              <div>
+                <h3 className='text-xl font-bold text-primary'>
+                  Liquidity Locked
+                </h3>
+                <p className='text-gray-300'>100% locked for security</p>
+              </div>
+            </div>
+
+            <div className='flex items-center space-x-4'>
+              <svg
+                className='h-8 w-8 text-primary'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'
+                />
+              </svg>
+              <div>
+                <h3 className='text-xl font-bold text-primary'>
+                  Community Driven
+                </h3>
+                <p className='text-gray-300'>
+                  Fair launch with community governance
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Footer */}
+      <footer className='p-6 bg-gray text-center mt-auto'>
+        <h3 className='text-xl font-bold text-primary'>Follow Us</h3>
+        <div className='flex justify-center space-x-6 mt-4'>
+          <a
+            href='https://x.com/safu_0x'
+            target='_blank'
+            className='text-gray-300 hover:text-primary'
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-6 w-6'
+              fill='currentColor'
+              viewBox='0 0 24 24'
+              aria-hidden='true'
+            >
+              <path d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' />
+            </svg>
+            <span className='sr-only'>Twitter</span>
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href='https://t.me/safu_0x'
+            target='_blank'
+            className='text-gray-300 hover:text-primary'
           >
-            Read our docs
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-6 w-6'
+              fill='currentColor'
+              viewBox='0 0 24 24'
+              aria-hidden='true'
+            >
+              <path d='M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z' />
+            </svg>
+            <span className='sr-only'>Telegram</span>
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+        <p className='mt-4 text-gray-500'>
+          © {new Date().getFullYear()} SAFU. All rights reserved.
+        </p>
       </footer>
-    </div>
+    </main>
   );
 }
