@@ -173,7 +173,7 @@ export default function Home() {
         </div>
       </motion.header>
 
-      {/* Hero and SAFU & Four.Meme Sections */}
+      {/* Hero SAFU */}
       <motion.div
         className='relative h-screen'
         initial={{ opacity: 0 }}
@@ -193,90 +193,55 @@ export default function Home() {
       >
         <div className='absolute inset-0'>
           <AnimatePresence mode='wait'>
-            {currentSlide === 0 ? (
-              <motion.section
-                key='slide1'
-                className='absolute inset-0 flex flex-col items-center justify-center text-center p-6'
+            <motion.section
+              key='slide1'
+              className='absolute inset-0 flex flex-col items-center justify-center text-center p-6'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <motion.img
+                src='/hero1.png'
+                alt='Astronaut Placeholder'
+                className='absolute inset-0 w-full h-full object-cover opacity-50'
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 1 }}
+                draggable={false}
+              />
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                className='relative z-10'
               >
-                <motion.img
-                  src='/hero1.png'
-                  alt='Astronaut Placeholder'
-                  className='absolute inset-0 w-full h-full object-cover opacity-50'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1 }}
-                  draggable={false}
-                />
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                  className='relative z-10'
+                <h1 className='text-6xl font-extrabold text-primary'>
+                  SAFU ON BSC
+                </h1>
+                <p
+                  className={`${lexendDeca.className} mt-4 text-3xl text-white max-w-xl mx-auto font-extrabold leading-relaxed`}
                 >
-                  <h1 className='text-6xl font-extrabold text-primary'>
-                    SAFU ON BSC
-                  </h1>
-                  <p
-                    className={`${lexendDeca.className} mt-4 text-3xl text-white max-w-xl mx-auto font-extrabold leading-relaxed`}
+                  The most SAFU meme token on Binance Smart Chain.
+                </p>
+                <div className='mt-6 flex space-x-4 justify-center'>
+                  <a
+                    href='#'
+                    target='_blank'
+                    className='px-6 py-3 text-lg font-bold bg-primary text-secondary rounded-lg shadow-lg hover:scale-105 transition'
                   >
-                    The most SAFU meme token on Binance Smart Chain.
-                  </p>
-                  <div className='mt-6 flex space-x-4 justify-center'>
-                    <a
-                      href='https://four.meme/token/0xf9926cd0dcb580357ccbaa8473b549fa86e79d96'
-                      target='_blank'
-                      className='px-6 py-3 text-lg font-bold bg-primary text-secondary rounded-lg shadow-lg hover:scale-105 transition'
-                    >
-                      Buy Now
-                    </a>
-                    <a
-                      href='https://t.me/safu_0x'
-                      target='_blank'
-                      className='px-6 py-3 text-lg font-bold bg-gray text-white rounded-lg shadow-lg hover:scale-105 transition'
-                    >
-                      Join Telegram
-                    </a>
-                  </div>
-                </motion.div>
-              </motion.section>
-            ) : (
-              <motion.section
-                key='slide2'
-                id='safu-four-meme'
-                className='absolute inset-0 flex items-center justify-center'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className='absolute inset-0'>
-                  <Image
-                    src='/safu_four.png'
-                    alt='SAFU & Four.Meme Background'
-                    fill
-                    className='object-cover opacity-50'
-                    priority
-                    draggable={false}
-                  />
+                    Buy Now
+                  </a>
+                  <a
+                    href='https://t.me/safu_0x'
+                    target='_blank'
+                    className='px-6 py-3 text-lg font-bold bg-gray text-white rounded-lg shadow-lg hover:scale-105 transition'
+                  >
+                    Join Telegram
+                  </a>
                 </div>
-                <div className='relative z-10 text-center max-w-4xl mx-auto px-6'>
-                  <h2 className='text-6xl font-extrabold text-primary mb-8'>
-                    SAFU & Four.Meme
-                  </h2>
-                  <p className='text-2xl font-semibold text-white leading-relaxed'>
-                    SAFU is more than just a meme token—it&apos;s a movement. By
-                    partnering with Four.Meme, we are pushing the boundaries of
-                    Web3 culture and integrating memes into the blockchain
-                    ecosystem. Our mission is to bring humor, community, and
-                    decentralized innovation together like never before.
-                  </p>
-                </div>
-              </motion.section>
-            )}
+              </motion.div>
+            </motion.section>
           </AnimatePresence>
         </div>
 
@@ -436,7 +401,7 @@ export default function Home() {
               </svg>
               <div>
                 <h3 className='text-xl font-bold text-primary'>Total Supply</h3>
-                <p className='text-gray-300'>1,000,000,000 SAFU</p>
+                <p className='text-gray-300'>- SAFU</p>
               </div>
             </div>
 
