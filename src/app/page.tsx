@@ -21,6 +21,7 @@ export default function Home() {
   const [mouseStart, setMouseStart] = useState<number | null>(null);
   const [mouseEnd, setMouseEnd] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,6 +52,10 @@ export default function Home() {
     e.preventDefault();
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(() => {
+      setIsMenuOpen(false);
+    }, 500);
   };
 
   const handleSlideChange = (slideIndex: number) => {
@@ -119,15 +124,13 @@ export default function Home() {
   };
 
   return (
-    <main
-      className={`${lexendDeca.className} bg-secondary text-white min-h-screen`}
-    >
+    <main className={`${lexendDeca.className} text-white min-h-screen`}>
       {/* Header */}
       <motion.header
         ref={container}
-        className='px-4 bg-gray shadow-lg fixed w-full top-0 z-50'
+        className='px-4 bg-secondary shadow-lg fixed w-full top-0 z-50'
         initial={{ opacity: 1 }}
-        animate={{ opacity: scrollY > 50 ? 0.8 : 1 }}
+        animate={{ opacity: scrollY > 50 ? 0.6 : 0.8 }}
         transition={{ duration: 0.3 }}
       >
         <div className='flex justify-between items-center'>
@@ -139,7 +142,39 @@ export default function Home() {
               height={96}
             />
           </div>
-          <nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            className='md:hidden text-primary p-2'
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-6 w-6'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              {isMenuOpen ? (
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M6 18L18 6M6 6l12 12'
+                />
+              ) : (
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M4 6h16M4 12h16M4 18h16'
+                />
+              )}
+            </svg>
+          </button>
+
+          {/* Desktop Navigation */}
+          <nav className='hidden md:block'>
             <ul className='flex space-x-6'>
               <li>
                 <Link
@@ -171,11 +206,54 @@ export default function Home() {
             </ul>
           </nav>
         </div>
+
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.nav
+              className='md:hidden'
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ul className='py-4 space-y-4'>
+                <li>
+                  <Link
+                    href='#about'
+                    className='block hover:text-primary'
+                    onClick={(e) => scrollToSection(e, 'about')}
+                  >
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href='#tokenomics'
+                    className='block hover:text-primary'
+                    onClick={(e) => scrollToSection(e, 'tokenomics')}
+                  >
+                    Tokenomics
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href='#roadmap'
+                    className='block hover:text-primary'
+                    onClick={(e) => scrollToSection(e, 'roadmap')}
+                  >
+                    Roadmap
+                  </Link>
+                </li>
+              </ul>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </motion.header>
 
       {/* Hero SAFU */}
       <motion.div
-        className='relative h-screen'
+        className='relative h-screen shadow-2xl rounded-b-lg'
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -204,7 +282,7 @@ export default function Home() {
               <motion.img
                 src='/hero1.png'
                 alt='Astronaut Placeholder'
-                className='absolute inset-0 w-full h-full object-cover opacity-50'
+                className='absolute inset-0 w-full h-full object-cover opacity-50 rounded-b-lg shadow-2xl'
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1 }}
@@ -216,11 +294,11 @@ export default function Home() {
                 transition={{ duration: 0.8, ease: 'easeOut' }}
                 className='relative z-10'
               >
-                <h1 className='text-6xl font-extrabold text-primary'>
+                <h1 className='text-[3rem] font-[800] text-primary'>
                   SAFU ON BSC
                 </h1>
                 <p
-                  className={`${lexendDeca.className} mt-4 text-3xl text-white max-w-xl mx-auto font-extrabold leading-relaxed`}
+                  className={`${lexendDeca.className} mt-4 text-[1.875rem]  text-white max-w-xl mx-auto font-extrabold leading-relaxed`}
                 >
                   The most SAFU meme token on Binance Smart Chain.
                 </p>
@@ -254,30 +332,23 @@ export default function Home() {
             }`}
             aria-label='Go to slide 1'
           />
-          <button
-            onClick={() => handleSlideChange(1)}
-            className={`w-3 h-3 rounded-full bg-primary transition-opacity cursor-pointer ${
-              currentSlide === 1 ? 'opacity-100' : 'opacity-50 hover:opacity-75'
-            }`}
-            aria-label='Go to slide 2'
-          />
         </div>
       </motion.div>
       {/* About Section */}
       <motion.section
         id='about'
-        className='p-12 bg-gray'
+        className='p-12'
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
       >
-        <h2 className='text-5xl font-bold text-primary text-center mb-12'>
+        <h2 className='text-[2rem] font-[800] text-secondary text-center mb-12'>
           About SAFU
         </h2>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto'>
           {/* Who We Are */}
-          <div className='bg-secondary p-6 rounded-lg shadow-lg'>
+          <div className='bg-secondary p-6 rounded-lg shadow-lg shadow-black/25'>
             <div className='text-primary text-4xl mb-4 flex justify-center'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -303,7 +374,7 @@ export default function Home() {
           </div>
 
           {/* Why SAFU */}
-          <div className='bg-secondary p-6 rounded-lg shadow-lg'>
+          <div className='bg-secondary p-6 rounded-lg shadow-lg shadow-black/25'>
             <div className='text-primary text-4xl mb-4 flex justify-center'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -329,7 +400,7 @@ export default function Home() {
           </div>
 
           {/* Community Benefits */}
-          <div className='bg-secondary p-6 rounded-lg shadow-lg'>
+          <div className='bg-secondary p-6 rounded-lg shadow-lg shadow-black/25'>
             <div className='text-primary text-4xl mb-4 flex justify-center'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -367,7 +438,7 @@ export default function Home() {
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
       >
-        <h2 className='text-5xl font-bold text-primary text-center'>
+        <h2 className='text-[2rem] font-[800] text-primary text-center'>
           Tokenomics
         </h2>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto'>
@@ -378,7 +449,7 @@ export default function Home() {
               alt='Tokenomics Distribution'
               width={400}
               height={400}
-              className='rounded-lg'
+              className='rounded-lg w-[100px] md:w-[400px]'
               draggable={false}
             />
           </div>
@@ -457,7 +528,7 @@ export default function Home() {
       </motion.section>
 
       {/* Footer */}
-      <footer className='p-6 bg-gray text-center mt-auto'>
+      <footer className='p-6 bg-secondary text-center mt-auto'>
         <h3 className='text-xl font-bold text-primary'>Follow Us</h3>
         <div className='flex justify-center space-x-6 mt-4'>
           <a
