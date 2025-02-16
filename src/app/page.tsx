@@ -226,7 +226,7 @@ export default function Home() {
                 </p>
                 <div className='mt-6 flex space-x-4 justify-center'>
                   <a
-                    href='#'
+                    href='https://meta.impact.fun/share/pot/0x6f20235345f3385FB761F46Be0F324046CdA79B9'
                     target='_blank'
                     className='px-6 py-3 text-lg font-bold bg-primary text-secondary rounded-lg shadow-lg hover:scale-105 transition'
                   >
@@ -421,9 +421,11 @@ export default function Home() {
               </svg>
               <div>
                 <h3 className='text-xl font-bold text-primary'>
-                  Liquidity Locked
+                  Token Allocation:
                 </h3>
-                <p className='text-gray-300'>100% locked for security</p>
+                <p className='text-gray-300'>
+                  🎯 Creator - 50%, Participants - 49%, Liquidity - 1%
+                </p>
               </div>
             </div>
 
