@@ -528,6 +528,135 @@ export default function Home() {
           </div>
         </div>
       </motion.section>
+      {/* Roadmap Section */}
+      <motion.section
+        id='roadmap'
+        className='p-12'
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+      >
+        <h2 className='text-[2rem] font-[800] text-secondary text-center mb-12'>
+          🚀 Our Journey
+        </h2>
+        <div className='max-w-6xl mx-auto'>
+          {/* Calendar View */}
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+            {/* Q1 2025 */}
+            <div className='bg-secondary/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl'>
+              <div className='flex items-center justify-between mb-6'>
+                <h3 className='text-2xl font-bold text-green-400'>Q1 2025</h3>
+                <span className='bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-medium'>
+                  Current
+                </span>
+              </div>
+              <ul className='space-y-4'>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-green-500/20 p-1 rounded-full'>✓</span>
+                  Fair launch & liquidity locked
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-green-500/20 p-1 rounded-full'>✓</span>
+                  Community building & social media
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-green-500/20 p-1 rounded-full'>✓</span>
+                  Marketing & partnerships
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-green-500/20 p-1 rounded-full'>✓</span>
+                  Platform listings
+                </li>
+              </ul>
+            </div>
+
+            {/* Q2 2025 */}
+            <div className='bg-secondary/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl'>
+              <div className='flex items-center justify-between mb-6'>
+                <h3 className='text-2xl font-bold text-blue-400'>Q2 2025</h3>
+                <span className='bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-medium'>
+                  Coming Soon
+                </span>
+              </div>
+              <ul className='space-y-4'>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-blue-500/20 p-1 rounded-full'>⚡</span>
+                  SAFU Staking Platform
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-blue-500/20 p-1 rounded-full'>⚡</span>
+                  Decentralized Exchange
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-blue-500/20 p-1 rounded-full'>⚡</span>
+                  Multi-chain Integration
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-blue-500/20 p-1 rounded-full'>⚡</span>
+                  NFT Ecosystem
+                </li>
+              </ul>
+            </div>
+
+            {/* Q3 2025 */}
+            <div className='bg-secondary/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl'>
+              <div className='flex items-center justify-between mb-6'>
+                <h3 className='text-2xl font-bold text-purple-400'>Q3 2025</h3>
+                <span className='bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-medium'>
+                  Future
+                </span>
+              </div>
+              <ul className='space-y-4'>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-purple-500/20 p-1 rounded-full'>🔥</span>
+                  SAFU Launchpad
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-purple-500/20 p-1 rounded-full'>🔥</span>
+                  Cross-Chain Bridge
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-purple-500/20 p-1 rounded-full'>🔥</span>
+                  Governance DAO
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-purple-500/20 p-1 rounded-full'>🔥</span>
+                  Advanced Tools
+                </li>
+              </ul>
+            </div>
+
+            {/* Q4 2025 */}
+            <div className='bg-secondary/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl'>
+              <div className='flex items-center justify-between mb-6'>
+                <h3 className='text-2xl font-bold text-pink-400'>Q4 2025</h3>
+                <span className='bg-pink-500/20 text-pink-400 px-3 py-1 rounded-full text-sm font-medium'>
+                  Vision
+                </span>
+              </div>
+              <ul className='space-y-4'>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-pink-500/20 p-1 rounded-full'>🌟</span>
+                  SAFU Payment System
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-pink-500/20 p-1 rounded-full'>🌟</span>
+                  Strategic Partnerships
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-pink-500/20 p-1 rounded-full'>🌟</span>
+                  Community Fund
+                </li>
+                <li className='flex items-center gap-3 text-gray-300'>
+                  <span className='bg-pink-500/20 p-1 rounded-full'>🌟</span>
+                  Metaverse Integration
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </motion.section>
 
       {/* Footer */}
       <footer className='p-6 bg-secondary text-center mt-auto'>
