@@ -292,31 +292,33 @@ export default function Home() {
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
-                className='relative z-10'
+                className='relative z-10 w-full'
               >
-                <h1 className='text-[3rem] font-[800] text-primary'>
-                  SAFU ON BSC
-                </h1>
-                <p
-                  className={`${lexendDeca.className} mt-4 text-[1.875rem]  text-white max-w-xl mx-auto font-extrabold leading-relaxed`}
-                >
-                  The most SAFU meme token on Binance Smart Chain.
-                </p>
-                <div className='mt-6 flex space-x-4 justify-center'>
-                  <a
-                    href='https://meta.impact.fun/share/pot/0x6f20235345f3385FB761F46Be0F324046CdA79B9'
-                    target='_blank'
-                    className='px-6 py-3 text-lg font-bold bg-primary text-secondary rounded-lg shadow-lg hover:scale-105 transition'
+                <div className='bg-secondary/50 p-6 rounded-2xl shadow-2xl'>
+                  <h1 className='text-[3rem] font-[800] text-primary'>
+                    SAFU ON BSC
+                  </h1>
+                  <p
+                    className={`${lexendDeca.className} mt-4 text-[1.875rem] text-white max-w-xl mx-auto font-extrabold leading-relaxed`}
                   >
-                    Buy Now
-                  </a>
-                  <a
-                    href='https://t.me/safu_0x'
-                    target='_blank'
-                    className='px-6 py-3 text-lg font-bold bg-gray text-white rounded-lg shadow-lg hover:scale-105 transition'
-                  >
-                    Join Telegram
-                  </a>
+                    The most SAFU meme token on Binance Smart Chain.
+                  </p>
+                  <div className='mt-6 flex space-x-4 justify-center'>
+                    <a
+                      href='https://meta.impact.fun/share/pot/0x6f20235345f3385FB761F46Be0F324046CdA79B9'
+                      target='_blank'
+                      className='px-6 py-3 text-lg font-bold bg-primary text-secondary rounded-lg shadow-lg hover:scale-105 transition'
+                    >
+                      Buy Now
+                    </a>
+                    <a
+                      href='https://t.me/safu_0x'
+                      target='_blank'
+                      className='px-6 py-3 text-lg font-bold bg-gray text-white rounded-lg shadow-lg hover:scale-105 transition'
+                    >
+                      Join Telegram
+                    </a>
+                  </div>
                 </div>
               </motion.div>
             </motion.section>
